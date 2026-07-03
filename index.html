@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora E85</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-800 p-4 font-sans flex justify-center items-start md:items-center">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-emerald-600 to-teal-700 p-6 text-white text-center">
+            <div class="flex justify-center mb-2">
+                <i data-lucide="droplet" class="text-emerald-200 w-8 h-8"></i>
+                <i data-lucide="fuel" class="text-white -ml-2 w-8 h-8"></i>
+            </div>
+            <h1 class="text-2xl font-bold">Calculadora E85</h1>
+            <p class="text-emerald-100 text-sm mt-1">Mistura ideal de Gasolina e Álcool</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex border-b border-gray-200">
+            <button id="btnSimple" onclick="switchTab('simple')" class="flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 border-b-2 border-emerald-600 text-emerald-700 bg-emerald-50/50">
+                <i data-lucide="calculator" class="w-4 h-4"></i> Volume Fixo
+            </button>
+            <button id="btnTank" onclick="switchTab('tank')" class="flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 text-gray-500 hover:bg-gray-50">
+                <i data-lucide="car" class="w-4 h-4"></i> Completar Tanque
+            </button>
+        </div>
+
+        <div class="p-6 space-y-6">
+            
+            <!-- Target Input -->
+            <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 flex items-center justify-between">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mistura Alvo (E%)</label>
+                    <p class="text-xs text-gray-500">Padrão E85 é 85% etanol</p>
+                </div>
+                <div class="relative">
+                    <input type="number" id="targetE" value="85" class="w-20 bg-white border border-gray-300 rounded-lg p-2 text-center text-lg font-bold text-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+                    <span class="absolute right-2 top-2 text-gray-400 font-bold">%</span>
+                </div>
+            </div>
+
+            <!-- Tab Content: Simple -->
+            <div id="contentSimple" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Volume Desejado a Abastecer</label>
+                    <div class="relative">
+                        <input type="number" id="totalVol" value="50" class="w-full bg-white border border-gray-300 rounded-lg p-3 pr-12 text-lg font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+                        <span class="absolute right-4 top-3.5 text-gray-500 font-medium">Litros</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Tank -->
+            <div id="contentTank" class="space-y-4 hidden">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Capacidade Total</label>
+                        <div class="relative">
+                            <input type="number" id="tankCapacity" value="50" class="w-full bg-white border border-gray-300 rounded-lg p-2 pr-8 text-md font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+                            <span class="absolute right-2 top-2.5 text-gray-500 text-sm">L</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Volume Atual</label>
+                        <div class="relative">
+                            <input type="number" id="currentVol" value="10" class="w-full bg-white border border-gray-300 rounded-lg p-2 pr-8 text-md font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+                            <span class="absolute right-2 top-2.5 text-gray-500 text-sm">L</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mistura Atual no Tanque (E%)</label>
+                    <div class="relative">
+                        <input type="number" id="currentE" value="27" class="w-full bg-white border border-gray-300 rounded-lg p-2 pr-8 text-md font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+                        <span class="absolute right-3 top-2.5 text-gray-500 text-sm">%</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Ex: Se só tem gasolina comum no tanque, use 27.</p>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorDiv" class="hidden bg-red-50 text-red-700 p-3 rounded-lg text-sm flex items-start gap-2 border border-red-200">
+                <i data-lucide="alert-circle" class="shrink-0 mt-0.5 w-4 h-4"></i>
+                <p id="errorText"></p>
+            </div>
+
+            <!-- Results -->
+            <div id="resultsDiv" class="mt-6">
+                <h3 class="text-xs uppercase tracking-wider font-bold text-gray-400 mb-3 text-center">O que abastecer na bomba</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    
+                    <!-- Result: Gas -->
+                    <div class="bg-orange-50 rounded-xl p-4 border border-orange-100 flex flex-col items-center justify-center text-center">
+                        <i data-lucide="fuel" class="text-orange-500 mb-2 w-6 h-6"></i>
+                        <span class="text-xs font-semibold text-orange-800 uppercase tracking-wide mb-1">Gasolina</span>
+                        <span class="text-2xl font-black text-orange-600">
+                            <span id="resGas">0.0</span> <span class="text-base font-medium">L</span>
+                        </span>
+                    </div>
+
+                    <!-- Result: Alcohol -->
+                    <div class="bg-emerald-50 rounded-xl p-4 border border-emerald-100 flex flex-col items-center justify-center text-center">
+                        <i data-lucide="droplet" class="text-emerald-500 mb-2 w-6 h-6"></i>
+                        <span class="text-xs font-semibold text-emerald-800 uppercase tracking-wide mb-1">Etanol</span>
+                        <span class="text-2xl font-black text-emerald-600">
+                            <span id="resAlc">0.0</span> <span class="text-base font-medium">L</span>
+                        </span>
+                    </div>
+                    
+                </div>
+                
+                <!-- Visual Bar -->
+                <div class="w-full h-3 bg-gray-200 rounded-full mt-4 flex overflow-hidden">
+                    <div id="barGas" class="h-full bg-orange-400 transition-all duration-500" style="width: 50%"></div>
+                    <div id="barAlc" class="h-full bg-emerald-400 transition-all duration-500" style="width: 50%"></div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500 mt-1 px-1">
+                    <span id="pctGasText">50% Gasolina</span>
+                    <span id="pctAlcText">50% Álcool</span>
+                </div>
+            </div>
+
+            <!-- Settings / Advanced -->
+            <div class="pt-4 border-t border-gray-100">
+                <button onclick="toggleSettings()" class="flex items-center gap-2 text-sm text-gray-500 hover:text-emerald-600 font-medium transition-colors w-full justify-center">
+                    <i data-lucide="settings" class="w-4 h-4"></i> 
+                    <span id="settingsText">Ajustar Configurações dos Combustíveis</span>
+                </button>
+
+                <div id="settingsDiv" class="hidden mt-4 p-4 bg-gray-50 rounded-xl border border-gray-200 space-y-4">
+                    <div class="flex items-start gap-2 text-xs text-gray-500 mb-2 bg-blue-50 p-2 rounded-lg border border-blue-100">
+                        <i data-lucide="info" class="text-blue-500 shrink-0 mt-0.5 w-4 h-4"></i>
+                        <p>No Brasil, a Gasolina Comum possui 27% de etanol. O Etanol de bomba é hidratado, sendo considerado ~100% para os cálculos de mistura flex.</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Etanol na Gasolina da Bomba (%)</label>
+                        <input type="number" id="gasE" value="27" class="w-full bg-white border border-gray-300 rounded p-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Etanol no Álcool da Bomba (%)</label>
+                        <input type="number" id="alcE" value="100" class="w-full bg-white border border-gray-300 rounded p-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Inicializa os ícones do Lucide
+        lucide.createIcons();
+
+        let activeTab = 'simple';
+
+        function switchTab(tab) {
+            activeTab = tab;
+            
+            const btnSimple = document.getElementById('btnSimple');
+            const btnTank = document.getElementById('btnTank');
+            const contentSimple = document.getElementById('contentSimple');
+            const contentTank = document.getElementById('contentTank');
+            
+            if (tab === 'simple') {
+                btnSimple.className = "flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 border-b-2 border-emerald-600 text-emerald-700 bg-emerald-50/50";
+                btnTank.className = "flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 text-gray-500 hover:bg-gray-50";
+                contentSimple.classList.remove('hidden');
+                contentTank.classList.add('hidden');
+            } else {
+                btnTank.className = "flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 border-b-2 border-emerald-600 text-emerald-700 bg-emerald-50/50";
+                btnSimple.className = "flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 text-gray-500 hover:bg-gray-50";
+                contentTank.classList.remove('hidden');
+                contentSimple.classList.add('hidden');
+            }
+            calculate();
+        }
+
+        function toggleSettings() {
+            const settingsDiv = document.getElementById('settingsDiv');
+            const settingsText = document.getElementById('settingsText');
+            if (settingsDiv.classList.contains('hidden')) {
+                settingsDiv.classList.remove('hidden');
+                settingsText.innerText = "Ocultar Configurações dos Combustíveis";
+            } else {
+                settingsDiv.classList.add('hidden');
+                settingsText.innerText = "Ajustar Configurações dos Combustíveis";
+            }
+        }
+
+        function calculate() {
+            const targetE = parseFloat(document.getElementById('targetE').value) || 0;
+            const gasE = parseFloat(document.getElementById('gasE').value) || 0;
+            const alcE = parseFloat(document.getElementById('alcE').value) || 0;
+            const totalVol = parseFloat(document.getElementById('totalVol').value) || 0;
+            const tankCapacity = parseFloat(document.getElementById('tankCapacity').value) || 0;
+            const currentVol = parseFloat(document.getElementById('currentVol').value) || 0;
+            const currentE = parseFloat(document.getElementById('currentE').value) || 0;
+
+            let error = '';
+            let vGas = 0;
+            let vAlc = 0;
+
+            if (targetE < gasE || targetE > alcE) {
+                error = `A mistura alvo (${targetE}%) deve estar entre a da gasolina (${gasE}%) e a do álcool (${alcE}%).`;
+            } else {
+                const eGas = gasE / 100;
+                const eAlc = alcE / 100;
+                const eTarget = targetE / 100;
+
+                if (activeTab === 'simple') {
+                    if (totalVol > 0) {
+                        vGas = totalVol * (eTarget - eAlc) / (eGas - eAlc);
+                        vAlc = totalVol - vGas;
+                    }
+                } else {
+                    if (currentVol >= tankCapacity) {
+                        error = "O tanque já está cheio.";
+                    } else {
+                        const eCurrent = currentE / 100;
+                        const vAdd = tankCapacity - currentVol;
+                        const targetEthContent = tankCapacity * eTarget;
+                        const currentEthContent = currentVol * eCurrent;
+                        const addEthContent = targetEthContent - currentEthContent;
+
+                        vGas = (addEthContent - vAdd * eAlc) / (eGas - eAlc);
+                        vAlc = vAdd - vGas;
+
+                        if (vGas < 0 || vAlc < 0) {
+                            error = `Impossível atingir E${targetE} com o volume atual. Necessita de mais espaço no tanque ou esvaziá-lo.`;
+                            vGas = 0;
+                            vAlc = 0;
+                        }
+                    }
+                }
+            }
+
+            const errorDiv = document.getElementById('errorDiv');
+            const resultsDiv = document.getElementById('resultsDiv');
+
+            if (error) {
+                errorDiv.classList.remove('hidden');
+                document.getElementById('errorText').innerText = error;
+                resultsDiv.classList.add('hidden');
+            } else if (vGas > 0 || vAlc > 0) {
+                errorDiv.classList.add('hidden');
+                resultsDiv.classList.remove('hidden');
+                
+                document.getElementById('resGas').innerText = vGas.toFixed(1);
+                document.getElementById('resAlc').innerText = vAlc.toFixed(1);
+
+                const total = vGas + vAlc;
+                const pctGas = (vGas / total) * 100;
+                const pctAlc = (vAlc / total) * 100;
+
+                document.getElementById('barGas').style.width = pctGas + '%';
+                document.getElementById('barAlc').style.width = pctAlc + '%';
+                document.getElementById('pctGasText').innerText = pctGas.toFixed(0) + '% Gasolina';
+                document.getElementById('pctAlcText').innerText = pctAlc.toFixed(0) + '% Álcool';
+            } else {
+                errorDiv.classList.add('hidden');
+                resultsDiv.classList.add('hidden');
+            }
+        }
+
+        // Adicionar eventos aos inputs
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', calculate);
+            input.addEventListener('focus', function() { this.select(); });
+        });
+
+        // Cálculo inicial
+        calculate();
+    </script>
+</body>
+</html>
