@@ -132,6 +132,7 @@
                         <span class="text-2xl font-black text-orange-600">
                             <span id="resGas">0.0</span> <span class="text-base font-medium">L</span>
                         </span>
+                        <span id="resGasMoney" class="text-sm font-bold text-orange-700/80 mt-1 hidden">R$ 0,00</span>
                     </div>
 
                     <!-- Result: Alcohol -->
@@ -141,6 +142,7 @@
                         <span class="text-2xl font-black text-emerald-600">
                             <span id="resAlc">0.0</span> <span class="text-base font-medium">L</span>
                         </span>
+                        <span id="resAlcMoney" class="text-sm font-bold text-emerald-700/80 mt-1 hidden">R$ 0,00</span>
                     </div>
                     
                 </div>
@@ -312,6 +314,19 @@
                 
                 document.getElementById('resGas').innerText = vGas.toFixed(1);
                 document.getElementById('resAlc').innerText = vAlc.toFixed(1);
+                
+                const resGasMoney = document.getElementById('resGasMoney');
+                const resAlcMoney = document.getElementById('resAlcMoney');
+                
+                if (activeTab === 'money' && priceGas > 0 && priceAlc > 0) {
+                    resGasMoney.innerText = 'R$ ' + (vGas * priceGas).toFixed(2).replace('.', ',');
+                    resAlcMoney.innerText = 'R$ ' + (vAlc * priceAlc).toFixed(2).replace('.', ',');
+                    resGasMoney.classList.remove('hidden');
+                    resAlcMoney.classList.remove('hidden');
+                } else {
+                    resGasMoney.classList.add('hidden');
+                    resAlcMoney.classList.add('hidden');
+                }
 
                 const total = vGas + vAlc;
                 const pctGas = (vGas / total) * 100;
