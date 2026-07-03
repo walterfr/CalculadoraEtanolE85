@@ -23,11 +23,14 @@
 
         <!-- Tabs -->
         <div class="flex border-b border-gray-200">
-            <button id="btnSimple" onclick="switchTab('simple')" class="flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 border-b-2 border-emerald-600 text-emerald-700 bg-emerald-50/50">
-                <i data-lucide="calculator" class="w-4 h-4"></i> Volume Fixo
+            <button id="btnSimple" onclick="switchTab('simple')" class="flex-1 py-3 text-xs sm:text-sm font-semibold transition-colors flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 border-b-2 border-emerald-600 text-emerald-700 bg-emerald-50/50">
+                <i data-lucide="calculator" class="w-4 h-4"></i> Por Litros
             </button>
-            <button id="btnTank" onclick="switchTab('tank')" class="flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 text-gray-500 hover:bg-gray-50">
-                <i data-lucide="car" class="w-4 h-4"></i> Completar Tanque
+            <button id="btnTank" onclick="switchTab('tank')" class="flex-1 py-3 text-xs sm:text-sm font-semibold transition-colors flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 text-gray-500 hover:bg-gray-50">
+                <i data-lucide="car" class="w-4 h-4"></i> Completar
+            </button>
+            <button id="btnMoney" onclick="switchTab('money')" class="flex-1 py-3 text-xs sm:text-sm font-semibold transition-colors flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 text-gray-500 hover:bg-gray-50">
+                <i data-lucide="coins" class="w-4 h-4"></i> Por Valor
             </button>
         </div>
 
@@ -81,6 +84,33 @@
                         <span class="absolute right-3 top-2.5 text-gray-500 text-sm">%</span>
                     </div>
                     <p class="text-xs text-gray-500 mt-1">Ex: Se só tem gasolina comum no tanque, use 27.</p>
+                </div>
+            </div>
+
+            <!-- Tab Content: Money -->
+            <div id="contentMoney" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Valor Total a Abastecer</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3.5 text-gray-500 font-medium">R$</span>
+                        <input type="number" id="totalMoney" value="100" class="w-full bg-white border border-gray-300 rounded-lg p-3 pl-10 text-lg font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Preço Gasolina</label>
+                        <div class="relative">
+                            <span class="absolute left-2 top-2.5 text-gray-500 text-sm">R$</span>
+                            <input type="number" id="priceGas" value="5.50" step="0.01" class="w-full bg-white border border-gray-300 rounded-lg p-2 pl-8 text-md font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Preço Etanol</label>
+                        <div class="relative">
+                            <span class="absolute left-2 top-2.5 text-gray-500 text-sm">R$</span>
+                            <input type="number" id="priceAlc" value="3.50" step="0.01" class="w-full bg-white border border-gray-300 rounded-lg p-2 pl-8 text-md font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -163,19 +193,30 @@
             
             const btnSimple = document.getElementById('btnSimple');
             const btnTank = document.getElementById('btnTank');
+            const btnMoney = document.getElementById('btnMoney');
             const contentSimple = document.getElementById('contentSimple');
             const contentTank = document.getElementById('contentTank');
+            const contentMoney = document.getElementById('contentMoney');
             
+            const activeClass = "flex-1 py-3 text-xs sm:text-sm font-semibold transition-colors flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 border-b-2 border-emerald-600 text-emerald-700 bg-emerald-50/50";
+            const inactiveClass = "flex-1 py-3 text-xs sm:text-sm font-semibold transition-colors flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 text-gray-500 hover:bg-gray-50";
+
+            btnSimple.className = inactiveClass;
+            btnTank.className = inactiveClass;
+            btnMoney.className = inactiveClass;
+            contentSimple.classList.add('hidden');
+            contentTank.classList.add('hidden');
+            contentMoney.classList.add('hidden');
+
             if (tab === 'simple') {
-                btnSimple.className = "flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 border-b-2 border-emerald-600 text-emerald-700 bg-emerald-50/50";
-                btnTank.className = "flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 text-gray-500 hover:bg-gray-50";
+                btnSimple.className = activeClass;
                 contentSimple.classList.remove('hidden');
-                contentTank.classList.add('hidden');
-            } else {
-                btnTank.className = "flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 border-b-2 border-emerald-600 text-emerald-700 bg-emerald-50/50";
-                btnSimple.className = "flex-1 py-4 text-sm font-semibold transition-colors flex justify-center items-center gap-2 text-gray-500 hover:bg-gray-50";
+            } else if (tab === 'tank') {
+                btnTank.className = activeClass;
                 contentTank.classList.remove('hidden');
-                contentSimple.classList.add('hidden');
+            } else if (tab === 'money') {
+                btnMoney.className = activeClass;
+                contentMoney.classList.remove('hidden');
             }
             calculate();
         }
@@ -200,6 +241,10 @@
             const tankCapacity = parseFloat(document.getElementById('tankCapacity').value) || 0;
             const currentVol = parseFloat(document.getElementById('currentVol').value) || 0;
             const currentE = parseFloat(document.getElementById('currentE').value) || 0;
+            
+            const totalMoney = parseFloat(document.getElementById('totalMoney').value) || 0;
+            const priceGas = parseFloat(document.getElementById('priceGas').value) || 0;
+            const priceAlc = parseFloat(document.getElementById('priceAlc').value) || 0;
 
             let error = '';
             let vGas = 0;
@@ -217,7 +262,7 @@
                         vGas = totalVol * (eTarget - eAlc) / (eGas - eAlc);
                         vAlc = totalVol - vGas;
                     }
-                } else {
+                } else if (activeTab === 'tank') {
                     if (currentVol >= tankCapacity) {
                         error = "O tanque já está cheio.";
                     } else {
@@ -234,6 +279,21 @@
                             error = `Impossível atingir E${targetE} com o volume atual. Necessita de mais espaço no tanque ou esvaziá-lo.`;
                             vGas = 0;
                             vAlc = 0;
+                        }
+                    }
+                } else if (activeTab === 'money') {
+                    if (totalMoney > 0 && priceGas > 0 && priceAlc > 0) {
+                        const ratioGas = (eTarget - eAlc) / (eGas - eAlc);
+                        const ratioAlc = 1 - ratioGas;
+                        
+                        const avgCostPerLiter = (ratioGas * priceGas) + (ratioAlc * priceAlc);
+                        
+                        if (avgCostPerLiter > 0) {
+                            const calculatedTotalVol = totalMoney / avgCostPerLiter;
+                            vGas = calculatedTotalVol * ratioGas;
+                            vAlc = calculatedTotalVol * ratioAlc;
+                        } else {
+                            error = "Preços inválidos.";
                         }
                     }
                 }
