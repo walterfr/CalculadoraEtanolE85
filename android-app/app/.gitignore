@@ -1,0 +1,5 @@
+/build
+
+# Signing keystore (never commit)
+release.keystore
+*.jks

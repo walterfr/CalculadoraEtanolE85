@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">E85 Ethanol Calculator</string>
+    <string name="main_settings">Main Settings</string>
+    <string name="target_blend_label">Target Blend (e.g. 85 for E85)</string>
+    <string name="ethanol_in_gasoline_label">Ethanol in Gasoline</string>
+    <string name="ethanol_in_ethanol_label">Ethanol in Ethanol Fuel</string>
+    <string name="tab_fixed_volume">Fixed Vol.</string>
+    <string name="tab_fill">Top Off</string>
+    <string name="tab_money">By Value</string>
+    <string name="total_volume_label">Desired Total Volume</string>
+    <string name="tank_capacity_label">Total Tank Capacity</string>
+    <string name="current_fuel_label">Current Fuel in Tank</string>
+    <string name="current_ethanol_pct_label">Current Ethanol %</string>
+    <string name="total_money_label">Total Amount to Spend</string>
+    <string name="price_gasoline_label">Gasoline Price</string>
+    <string name="price_ethanol_label">Ethanol Price</string>
+    <string name="results_title">Fill up exactly:</string>
+    <string name="gasoline_upper">GASOLINE</string>
+    <string name="ethanol_upper">ETHANOL</string>
+    <string name="liters_format">%1$.1f L</string>
+    <string name="unit_liters" translatable="false">L</string>
+    <string name="unit_percent" translatable="false">%</string>
+    <string name="footer">Made with ♥ in Fortaleza.</string>
+    <string name="error_target_out_of_range">The target blend (%1$s%%) must be between the ethanol %% of the gasoline (%2$s%%) and of the ethanol fuel (%3$s%%).</string>
+    <string name="error_tank_full">The tank is already full or the current volume exceeds its capacity.</string>
+    <string name="error_target_unreachable">Cannot reach E%1$s with the fuel currently in the tank. Drain some fuel or change the target.</string>
+    <string name="error_missing_input">Enter values to calculate.</string>
+    <string name="error_loading_data">Error loading data: %1$s</string>
+</resources>

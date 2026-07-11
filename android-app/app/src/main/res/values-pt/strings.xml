@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Calculadora Etanol E85</string>
+    <string name="main_settings">Configurações Principais</string>
+    <string name="target_blend_label">Mistura Alvo (Ex: 85 para E85)</string>
+    <string name="ethanol_in_gasoline_label">Etanol na Gasolina</string>
+    <string name="ethanol_in_ethanol_label">Etanol no Álcool</string>
+    <string name="tab_fixed_volume">Vol. Fixo</string>
+    <string name="tab_fill">Completar</string>
+    <string name="tab_money">Por Valor</string>
+    <string name="total_volume_label">Volume Total Desejado</string>
+    <string name="tank_capacity_label">Capacidade Total do Tanque</string>
+    <string name="current_fuel_label">Combustível Atual no Tanque</string>
+    <string name="current_ethanol_pct_label">% de Etanol Atual</string>
+    <string name="total_money_label">Valor Total a Abastecer</string>
+    <string name="price_gasoline_label">Preço Gasolina</string>
+    <string name="price_ethanol_label">Preço Etanol</string>
+    <string name="results_title">Abasteça exatamente:</string>
+    <string name="gasoline_upper">GASOLINA</string>
+    <string name="ethanol_upper">ETANOL</string>
+    <string name="liters_format">%1$.1f L</string>
+    <string name="footer">Feito com ♥ em Fortaleza.</string>
+    <string name="error_target_out_of_range">A mistura alvo (%1$s%%) deve estar entre a %% da Gasolina (%2$s%%) e a %% do Etanol (%3$s%%).</string>
+    <string name="error_tank_full">O tanque já está cheio ou o volume atual é maior que a capacidade.</string>
+    <string name="error_target_unreachable">Impossível atingir E%1$s com o combustível atual no tanque. Esvazie um pouco ou mude a meta.</string>
+    <string name="error_missing_input">Preencha os valores para calcular.</string>
+    <string name="error_loading_data">Erro ao carregar dados: %1$s</string>
+</resources>
