@@ -94,7 +94,7 @@ fun CalculatorScreen(viewModel: CalculatorViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(16.dp))
 
             // Tabs
-            TabRow(
+            PrimaryTabRow(
                 selectedTabIndex = state.activeTab.ordinal,
                 containerColor = MaterialTheme.colorScheme.surface,
                 contentColor = MaterialTheme.colorScheme.primary

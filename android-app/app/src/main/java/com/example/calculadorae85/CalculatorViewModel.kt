@@ -78,7 +78,7 @@ class CalculatorViewModel : ViewModel() {
         val pGas = s.pctGasoline.toDoubleLenient() ?: 27.0
         val pAlc = s.pctAlcohol.toDoubleLenient() ?: 100.0
 
-        if (target < pGas || target > pAlc) {
+        if (pAlc == pGas || target < pGas || target > pAlc) {
             _state.update { it.copy(error = CalculatorError.TargetOutOfRange(target, pGas, pAlc), resGasLiters = 0.0, resAlcLiters = 0.0) }
             return
         }

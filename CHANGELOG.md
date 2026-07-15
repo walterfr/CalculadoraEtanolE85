@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+- Remoção do código de template não utilizado (Navigation, MainScreen, DataRepository e testes associados) que veio do template do Android Studio
+- Remoção das dependências Navigation3 e do plugin kotlin-serialization, agora sem uso
+- Guard contra divisão por zero quando "Etanol na Gasolina" = "Etanol no Álcool" (antes exibia "NaN L")
+- Migração de `TabRow` (deprecado) para `PrimaryTabRow` (Material 3)
+
 ## [1.1] - 2026-07-10 (versionCode 2)
 
 - Internacionalização completa: português, inglês (padrão) e espanhol
