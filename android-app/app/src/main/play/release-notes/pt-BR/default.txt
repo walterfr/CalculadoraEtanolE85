@@ -1,0 +1,7 @@
+Versão 1.1
+
+- O app agora fala português, inglês e espanhol, seguindo o idioma do celular
+- No Android 13+ você pode escolher o idioma do app nas configurações
+- Preços e números seguem o formato do seu país
+- Os campos agora aceitam vírgula ou ponto ao digitar valores
+- Correções de estabilidade

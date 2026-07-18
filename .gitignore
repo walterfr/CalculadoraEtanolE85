@@ -1,0 +1,13 @@
+# IDE
+.idea/
+*.iml
+
+# Secrets — never commit
+*.keystore
+*.jks
+*-service-account.json
+local.properties
+
+# OS
+.DS_Store
+Thumbs.db

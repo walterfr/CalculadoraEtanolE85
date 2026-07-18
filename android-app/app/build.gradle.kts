@@ -3,6 +3,7 @@ import java.util.Properties
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.play.publisher)
 }
 
 // Signing credentials live in local.properties (not in version control) or environment variables.
@@ -63,6 +64,20 @@ android {
 
 kotlin {
     jvmToolchain(17)
+}
+
+// Google Play publishing (Gradle Play Publisher).
+// The service account JSON grants publishing rights: it is a secret and stays out of
+// version control. Default path is app/play-service-account.json; override with
+// PLAY_SERVICE_ACCOUNT_JSON in local.properties or as an environment variable.
+// Nothing is sent to Play unless a publish task is invoked explicitly.
+play {
+    serviceAccountCredentials.set(
+        file(secret("PLAY_SERVICE_ACCOUNT_JSON") ?: "play-service-account.json")
+    )
+    // Closed test track currently used by the app on Play.
+    track.set("alpha")
+    defaultToAppBundles.set(true)
 }
 
 dependencies {

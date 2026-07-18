@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- Configuração do Gradle Play Publisher 4.0.0 para publicar no Google Play por linha de comando (faixa padrão `alpha`, envio em AAB)
+- Notas de versão da loja versionadas em `app/src/main/play/release-notes/` nos três idiomas
+- Chave da conta de serviço do Play mantida fora do controle de versão
+
 - Remoção do código de template não utilizado (Navigation, MainScreen, DataRepository e testes associados) que veio do template do Android Studio
 - Remoção das dependências Navigation3 e do plugin kotlin-serialization, agora sem uso
 - Guard contra divisão por zero quando "Etanol na Gasolina" = "Etanol no Álcool" (antes exibia "NaN L")

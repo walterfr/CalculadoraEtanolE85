@@ -53,8 +53,40 @@ RELEASE_KEY_PASSWORD=...
 E coloque o arquivo `release.keystore` em `android-app/app/` (também ignorado pelo git). Depois:
 
 ```bash
-./gradlew assembleRelease
+./gradlew assembleRelease   # APK
+./gradlew bundleRelease     # AAB (formato exigido pelo Google Play)
 ```
+
+## Publicação no Google Play
+
+O projeto usa o [Gradle Play Publisher](https://github.com/Triple-T/gradle-play-publisher) (GPP 4.x, necessário para AGP 9) para enviar versões pela linha de comando.
+
+### Configuração inicial (uma vez)
+
+1. No **Google Cloud Console**, na conta ligada ao Play: ative a *Google Play Android Developer API*, crie uma **conta de serviço** e gere uma chave **JSON**.
+2. No **Play Console** → *Usuários e permissões*: convide o e-mail dessa conta de serviço e conceda as permissões de release.
+3. Salve o JSON em `android-app/app/play-service-account.json` (já ignorado pelo git). Para usar outro caminho, defina `PLAY_SERVICE_ACCOUNT_JSON` no `local.properties` ou como variável de ambiente.
+
+> ⚠️ O JSON dá direito de publicar em seu nome. Trate como o keystore: nunca no repositório; em CI, use um *secret*.
+
+### Enviando uma versão
+
+```bash
+./gradlew publishReleaseBundle    # envia o AAB para a faixa configurada
+./gradlew publishReleaseListing   # envia apenas os metadados da ficha
+```
+
+A faixa padrão é **`alpha`** (teste fechado), definida no bloco `play {}` do [app/build.gradle.kts](android-app/app/build.gradle.kts). Para enviar a outra faixa sem alterar o arquivo:
+
+```bash
+./gradlew publishReleaseBundle --track internal
+```
+
+### Notas de versão
+
+Ficam em `app/src/main/play/release-notes/<locale>/default.txt`, com um arquivo por idioma (`pt-BR`, `en-US`, `es-ES`), acompanhando os idiomas do app. Limite de 500 caracteres por idioma.
+
+> **Acesso de produção:** contas pessoais precisam de um teste fechado com no mínimo **12 testadores por 14 dias contínuos** antes de solicitar a produção. Até lá, apenas as faixas de teste aceitam envios.
 
 ## Estrutura do repositório
 
